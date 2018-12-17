@@ -11,7 +11,7 @@ public interface StudentDao {
     public List<Student> queryAll();
 
 
-    @Query("SELECT * from Student LIMIT start,count")
+    @Query("SELECT * from Student ORDER BY name COLLATE NOCASE ASC")
     public List<Student> queryPage(int start,int count);
 
     @Insert
