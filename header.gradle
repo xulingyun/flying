@@ -1,0 +1,5 @@
+if(appConfig.isAlone){
+    apply plugin: 'com.android.application'
+}else{
+    apply plugin: 'com.android.library'
+}

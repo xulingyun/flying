@@ -1,0 +1,6 @@
+ext {
+    appConfig = [
+            isAlone:false,
+            isMaven:false
+    ]
+}

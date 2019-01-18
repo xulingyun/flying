@@ -1,0 +1,36 @@
+apply from: '../header.gradle'
+apply from:'../lib.gradle'
+
+android {
+    defaultConfig {
+        if(appConfig.isAlone){
+            applicationId  "con.cczq.mine"
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                             AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+    }
+
+    sourceSets{
+        main{
+            if(appConfig.isAlone){
+                manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+            }else{
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                resources{
+                    exclude 'src/main/alone/*'
+                }
+            }
+        }
+    }
+    resourcePrefix "mine_"
+}
+
+dependencies {
+    implementation project(':BaseLibrary')
+}

@@ -1,18 +1,18 @@
 apply plugin: 'com.android.application'
+apply from: '../lib.gradle'
 
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.cczq.fly.flying"
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
+                arguments = [
+                            "room.schemaLocation": "$projectDir/schemas".toString(),
+                            AROUTER_MODULE_NAME  : project.getName()]
             }
         }
     }
@@ -35,7 +35,14 @@ android {
     dataBinding {
         enabled true
     }
-    resourcePrefix "flying_"
+    sourceSets {
+        //数据库概要、记录存放位置
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -46,23 +53,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //用于网路访问的rxjava2+retrofit2
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.4'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
-    //路由
-    implementation 'com.alibaba:arouter-api:1.4.0'
-    annotationProcessor 'com.alibaba:arouter-compiler:1.2.1'
-    //room数据库
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
-    implementation "android.arch.persistence.room:rxjava2:1.1.1"
-    //分页插件paging，针对于recyclerview
-    implementation "android.arch.paging:runtime:1.0.1"
-    implementation "android.arch.paging:rxjava2:1.0.1"
-    //lifecycle的扩展
-    implementation "android.arch.lifecycle:extensions:1.1.1"
+    //    if (appConfig.isMaven) {
+    //
+    //    } else {
+    //        implementation project(':BaseLibrary')
+    //    }
+    implementation project(':mine')
+    implementation project(':see_dot')
+    implementation project(':BaseLibrary')
 }
